@@ -1,4 +1,4 @@
-﻿using AlprNet.ConsoleApp.PlateDetection;
+﻿using AlprNet.Lib.PlateDetection;
 using AlprNet.Lib.PlateRecognition;
 using OpenCvSharp;
 
@@ -8,10 +8,36 @@ namespace AlprNet.ConsoleApp
     {
         private static async Task Main(string[] args)
         {
-            /*var targetDir = Path.Combine(Directory.GetCurrentDirectory());
-            await PlateDetectionModelsRepository.DownloadAllModelsAsync(targetDir);*/
+            Mat plateCropImg;
 
-            await RunPlateRecognitionSampleAsync();
+            // Plate detection
+            {
+                var modelDirPath = Path.Combine(Directory.GetCurrentDirectory(), "PlateDetection\\Models");
+                var modelPath = Path.Combine(modelDirPath, "yolo-v9-t-512-license-plates-end2end.onnx");
+                using var licensePlateDetector = new LicensePlateDetector(modelPath);
+                var image = Mat.FromImageData(await File.ReadAllBytesAsync("car.jpg"));
+
+                Console.WriteLine("Running license plate detection");
+                var detections = licensePlateDetector.Run(image);
+
+                plateCropImg = detections.Single().ToPlateCropImage(image);
+                Console.WriteLine("License plate detected and cropped");
+                //plateCropImg.SaveImage("crop_car.jpg");
+            }
+
+            // Plate recognition
+            {
+                var modelDirPath = Path.Combine(Directory.GetCurrentDirectory(), "PlateRecognition\\Models");
+                var modelPath = Path.Combine(modelDirPath, "cct_s_v1_global.onnx");
+                var modelConfigPath = Path.Combine(modelDirPath, "cct_s_v1_global_plate_config.yaml");
+                using var recognizer = new LicensePlateRecognizer(modelPath, modelConfigPath);
+
+                Console.WriteLine("Running license plate recognition");
+                var result = recognizer.Run([plateCropImg], returnConfidence: true);
+
+                var plate = result.plates.Single();
+                Console.WriteLine($"License plate is: {plate}");
+            }
         }
 
         private static async Task RunPlateRecognitionSampleAsync()
