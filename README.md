@@ -1,8 +1,8 @@
 # AlprNet
 
-.NET standard library for license plate detection and recognition. It uses public and open source ONNX models for inference.
+A .NET Standard library for license plate detection and recognition. It uses public and open source ONNX models for inference.
 
-> **Note:** Library works, but it's WIP. Once more polished, a NuGet package will be published.
+> **Note:** The library works, but it is a work in progress (WIP). Once further polished, a NuGet package will be published.
 
 ## Demo
 
@@ -12,11 +12,11 @@
 ### Detected License Plate
 ![Detected License Plate](AlprNet/AlprNet.ConsoleApp/car_plate.jpg)
 
-**License plate string**: `UD 1234`
+**License plate string:** `UD 1234`
 
 ## Usage
 
-Example usage. See [`Program.cs`](AlprNet.ConsoleApp/Program.cs) for full inference code.
+Example usage is shown below. See [`Program.cs`](AlprNet.ConsoleApp/Program.cs) for the full inference code.
 
 ```csharp
 Mat plateCropImg;
@@ -53,11 +53,11 @@ Mat plateCropImg;
 ```
 
 ## Models
-Models are packed in repository, but they can also be downloaded via utility classes:
+Models are included in the repository but can also be downloaded via utility classes:
 - `PlateDetectionModelsRepository`
 - `PlateOcrModelsRepository`
 
 ## Acknowledgments
 
-- YOLO v9 models and inference code for license plate detection (https://github.com/ankandrew/open-image-models)
-- OCR models and inference code for license plate recognition (https://github.com/ankandrew/fast-alpr)
+- YOLO v9 models and inference code for license plate detection: (https://github.com/ankandrew/open-image-models)
+- OCR models and inference code for license plate recognition: (https://github.com/ankandrew/fast-alpr)
