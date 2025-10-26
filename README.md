@@ -16,7 +16,7 @@ A .NET Standard library for license plate detection and recognition. It uses pub
 
 ## Usage
 
-Example usage is shown below. See [`Program.cs`](AlprNet.ConsoleApp/Program.cs) for the full inference code.
+Example usage is shown below. See [`Program.cs`](AlprNet/AlprNet.ConsoleApp/Program.cs) for the full inference code.
 
 ```csharp
 Mat plateCropImg;
