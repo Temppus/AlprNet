@@ -7,7 +7,7 @@
 ## Demo
 
 ### Input Image
-<img src="AlprNet/AlprNet.ConsoleApp/car.jpg" alt="Car Image" style="max-width: 250px;">
+<img src="AlprNet/AlprNet.ConsoleApp/car.jpg" alt="Car Image" width="250">
 
 ### Detected License Plate
 ![Detected License Plate](AlprNet/AlprNet.ConsoleApp/car_plate.jpg)
