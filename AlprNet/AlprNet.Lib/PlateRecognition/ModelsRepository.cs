@@ -1,13 +1,22 @@
-﻿using AlprNet.Lib.Config;
-
-namespace AlprNet.Lib.Utils
+﻿namespace AlprNet.Lib.PlateRecognition
 {
     public static class ModelsRepository
     {
+        public enum OcrModelType
+        {
+            CctSV1GlobalModel,
+            CctXsV1GlobalModel,
+            CctSReluV1GlobalModel,
+            CctXsReluV1GlobalModel,
+            ArgentinianPlatesCnnModel,
+            ArgentinianPlatesCnnSynthModel,
+            EuropeanPlatesMobileVitV2Model,
+            GlobalPlatesMobileVitV2Model
+        }
+
         private const string BaseUrl = "https://github.com/ankandrew/cnn-ocr-lp/releases/download";
 
-        // Exact mapping from the Python dict
-        private static readonly Dictionary<OcrModelType, (string OnnxUrl, string YamlUrl)> AvailableOnnxModels = new()
+        public static readonly Dictionary<OcrModelType, (string OnnxUrl, string YamlUrl)> AvailableOnnxModels = new()
         {
             [OcrModelType.CctSV1GlobalModel] = (
                 $"{BaseUrl}/arg-plates/cct_s_v1_global.onnx",
@@ -45,51 +54,33 @@ namespace AlprNet.Lib.Utils
 
         public static async Task DownloadModelsAsync(string targetDir)
         {
-            Console.WriteLine($"Downloading models to: {targetDir}\n");
-
             foreach (var kvp in AvailableOnnxModels)
             {
-                var model = kvp.Key;
                 var (onnxUrl, yamlUrl) = kvp.Value;
 
                 await DownloadFileAsync(onnxUrl, Path.Combine(targetDir, Path.GetFileName(onnxUrl)));
                 await DownloadFileAsync(yamlUrl, Path.Combine(targetDir, Path.GetFileName(yamlUrl)));
             }
-
-            Console.WriteLine("\nAll downloads finished.");
         }
 
         private static async Task DownloadFileAsync(string url, string destinationPath)
         {
-            // Skip if already present (optional – comment out to always re-download)
+            // Skip if already present
             if (File.Exists(destinationPath))
             {
-                Console.WriteLine($"[SKIP] {Path.GetFileName(destinationPath)} already exists.");
                 return;
             }
 
-            Console.Write($"Downloading {Path.GetFileName(destinationPath)} ... ");
-
-            try
+            var httpClient = new HttpClient();
+            using var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+            if (!response.IsSuccessStatusCode)
             {
-                var httpClient = new HttpClient();
-                using var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
-                if (!response.IsSuccessStatusCode)
-                {
-                    Console.WriteLine($"FAILED ({response.StatusCode})");
-                    return;
-                }
-
-                await using var stream = await response.Content.ReadAsStreamAsync();
-                await using var fileStream = new FileStream(destinationPath, FileMode.CreateNew, FileAccess.Write, FileShare.None);
-                await stream.CopyToAsync(fileStream);
-
-                Console.WriteLine("DONE");
+                return;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"ERROR: {ex.Message}");
-            }
+
+            await using var stream = await response.Content.ReadAsStreamAsync();
+            await using var fileStream = new FileStream(destinationPath, FileMode.CreateNew, FileAccess.Write, FileShare.None);
+            await stream.CopyToAsync(fileStream);
         }
     }
 }

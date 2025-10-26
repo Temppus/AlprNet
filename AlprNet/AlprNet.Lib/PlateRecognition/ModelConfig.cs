@@ -1,7 +1,7 @@
 ﻿using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace AlprNet.Lib.Config
+namespace AlprNet.Lib.PlateRecognition
 {
     public enum ModelImageColorMode
     {
@@ -12,8 +12,7 @@ namespace AlprNet.Lib.Config
     public enum ModelImageInterpolation
     {
         Linear,
-        Nearest,
-        Cubic
+        Nearest
     }
 
     public record PlateOCRConfig
@@ -27,7 +26,8 @@ namespace AlprNet.Lib.Config
         public ModelImageInterpolation Interpolation { get; init; } = ModelImageInterpolation.Linear;
         public ModelImageColorMode ImageColorMode { get; init; } = ModelImageColorMode.Grayscale;
 
-        public object PaddingColor { get; init; } = 114;
+        public const int DefaultPaddingColor = 114;
+        public object PaddingColor { get; init; } = DefaultPaddingColor;
 
         public int VocabularySize => Alphabet.Length;
         public int NumChannels => ImageColorMode == ModelImageColorMode.Rgb ? 3 : 1;

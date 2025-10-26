@@ -1,4 +1,4 @@
-﻿using AlprNet.Lib;
+﻿using AlprNet.Lib.PlateRecognition;
 using OpenCvSharp;
 
 namespace AlprNet.ConsoleApp
@@ -9,7 +9,7 @@ namespace AlprNet.ConsoleApp
         {
             var image = Mat.FromImageData(await File.ReadAllBytesAsync("car_plate.jpg"));
 
-            var modelDirPath = Path.Combine(Directory.GetCurrentDirectory(), "Models");
+            var modelDirPath = Path.Combine(Directory.GetCurrentDirectory(), "PlateRecognition\\Models");
             var files = Directory.GetFiles(modelDirPath);
 
             var onnxModelPaths = files.Where(x => x.EndsWith(".onnx")).ToArray();

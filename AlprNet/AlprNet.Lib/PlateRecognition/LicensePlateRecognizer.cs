@@ -1,9 +1,8 @@
-﻿using AlprNet.Lib.Config;
-using Microsoft.ML.OnnxRuntime;
+﻿using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using OpenCvSharp;
 
-namespace AlprNet.Lib
+namespace AlprNet.Lib.PlateRecognition
 {
     public class LicensePlateRecognizer : IDisposable
     {

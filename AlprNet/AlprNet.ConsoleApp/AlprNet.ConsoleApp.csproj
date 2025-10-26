@@ -22,51 +22,55 @@
     <None Update="car_plate.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\arg_cnn_ocr.onnx">
+    <None Update="PlateRecognition\Models\arg_cnn_ocr.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\arg_cnn_ocr_config.yaml">
+    <None Update="PlateRecognition\Models\arg_cnn_ocr_config.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\arg_cnn_ocr_synth.onnx">
+    <None Update="PlateRecognition\Models\arg_cnn_ocr_synth.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\cct_s_relu_v1_global.onnx">
+    <None Update="PlateRecognition\Models\cct_s_relu_v1_global.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\cct_s_relu_v1_global_plate_config.yaml">
+    <None Update="PlateRecognition\Models\cct_s_relu_v1_global_plate_config.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\cct_s_v1_global.onnx">
+    <None Update="PlateRecognition\Models\cct_s_v1_global.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\cct_s_v1_global_plate_config.yaml">
+    <None Update="PlateRecognition\Models\cct_s_v1_global_plate_config.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\cct_xs_relu_v1_global.onnx">
+    <None Update="PlateRecognition\Models\cct_xs_relu_v1_global.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\cct_xs_relu_v1_global_plate_config.yaml">
+    <None Update="PlateRecognition\Models\cct_xs_relu_v1_global_plate_config.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\cct_xs_v1_global.onnx">
+    <None Update="PlateRecognition\Models\cct_xs_v1_global.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\cct_xs_v1_global_plate_config.yaml">
+    <None Update="PlateRecognition\Models\cct_xs_v1_global_plate_config.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\european_mobile_vit_v2_ocr.onnx">
+    <None Update="PlateRecognition\Models\european_mobile_vit_v2_ocr.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\european_mobile_vit_v2_ocr_config.yaml">
+    <None Update="PlateRecognition\Models\european_mobile_vit_v2_ocr_config.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\global_mobile_vit_v2_ocr.onnx">
+    <None Update="PlateRecognition\Models\global_mobile_vit_v2_ocr.onnx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Models\global_mobile_vit_v2_ocr_config.yaml">
+    <None Update="PlateRecognition\Models\global_mobile_vit_v2_ocr_config.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="PlateDetection\Models\" />
   </ItemGroup>
 
 </Project>
