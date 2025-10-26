@@ -19,34 +19,37 @@
 Example usage. See [`Program.cs`](AlprNet.ConsoleApp/Program.cs) for full inference code.
 
 ```csharp
-using AlprNet.Lib.PlateDetection;
-using AlprNet.Lib.PlateRecognition;
-using OpenCvSharp;
+Mat plateCropImg;
 
-// Load an image
-var image = Mat.FromImageData(await File.ReadAllBytesAsync("car.jpg"));
+// Plate detection
+{
+    var modelDirPath = Path.Combine(Directory.GetCurrentDirectory(), "PlateDetection\\Models");
+    var modelPath = Path.Combine(modelDirPath, "yolo-v9-t-512-license-plates-end2end.onnx");
+    using var licensePlateDetector = new LicensePlateDetector(modelPath);
+    var image = Mat.FromImageData(await File.ReadAllBytesAsync("car.jpg"));
 
-// Step 1: Detect license plates
-var modelDirPath = Path.Combine(Directory.GetCurrentDirectory(), "PlateDetection\\Models");
-var modelPath = Path.Combine(modelDirPath, "yolo-v9-t-512-license-plates-end2end.onnx");
-using var licensePlateDetector = new LicensePlateDetector(modelPath);
+    Console.WriteLine("Running license plate detection");
+    var detections = licensePlateDetector.Run(image);
+    var detectedPlate = detections.Single();
 
-var detections = licensePlateDetector.Run(image);
-var detectedPlate = detections.Single();
+    plateCropImg = detectedPlate.ToPlateCropImage(image);
+    Console.WriteLine("License plate detected and cropped");
+    plateCropImg.SaveImage("car_plate.jpg");
+}
 
-// Step 2: Crop the detected plate
-var plateCropImg = detectedPlate.ToPlateCropImage(image);
+// Plate recognition
+{
+    var modelDirPath = Path.Combine(Directory.GetCurrentDirectory(), "PlateRecognition\\Models");
+    var modelPath = Path.Combine(modelDirPath, "cct_s_v1_global.onnx");
+    var modelConfigPath = Path.Combine(modelDirPath, "cct_s_v1_global_plate_config.yaml");
+    using var recognizer = new LicensePlateRecognizer(modelPath, modelConfigPath);
 
-// Step 3: Recognize the plate text
-var recognitionModelPath = Path.Combine(Directory.GetCurrentDirectory(), "PlateRecognition\\Models");
-var onnxModelPath = Path.Combine(recognitionModelPath, "cct_s_v1_global.onnx");
-var configPath = Path.Combine(recognitionModelPath, "cct_s_v1_global_plate_config.yaml");
+    Console.WriteLine("Running license plate recognition");
+    var result = recognizer.Run([plateCropImg], returnConfidence: true);
 
-using var recognizer = new LicensePlateRecognizer(onnxModelPath, configPath);
-var result = recognizer.Run([plateCropImg], returnConfidence: true);
-
-var plateText = result.plates.Single();
-Console.WriteLine($"License plate: {plateText}");
+    var plate = result.plates.Single();
+    Console.WriteLine($"License plate is: {plate}");
+}
 ```
 
 ## Models
