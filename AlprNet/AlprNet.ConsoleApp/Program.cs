@@ -23,7 +23,7 @@ namespace AlprNet.ConsoleApp
 
                 plateCropImg = detectedPlate.ToPlateCropImage(image);
                 Console.WriteLine("License plate detected and cropped");
-                //plateCropImg.SaveImage("crop_car.jpg");
+                plateCropImg.SaveImage("car_plate.jpg");
             }
 
             // Plate recognition
