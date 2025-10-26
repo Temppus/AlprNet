@@ -10,7 +10,7 @@ namespace AlprNet.Lib.PlateRecognition
         private readonly PlateOCRConfig _config;
         private bool _disposed;
 
-        public LicensePlateRecognizer(string onnxModelPath, string plateConfigPath)
+        public LicensePlateRecognizer(string onnxModelPath, string plateConfigPath, SessionOptions? sessionOptions = null)
         {
             if (onnxModelPath == null) throw new ArgumentNullException(nameof(onnxModelPath));
             if (plateConfigPath == null) throw new ArgumentNullException(nameof(plateConfigPath));
@@ -23,8 +23,7 @@ namespace AlprNet.Lib.PlateRecognition
 
             _config = PlateOCRConfig.FromYaml(configPath);
 
-            var sessionOptions = new SessionOptions();
-            _session = new InferenceSession(modelPath, sessionOptions);
+            _session = new InferenceSession(modelPath, sessionOptions ?? new SessionOptions());
         }
 
         public (List<string> plates, float[,]? confidences) Run(Mat[] images, bool returnConfidence = false)

@@ -13,9 +13,16 @@ public class LicensePlateDetector : IDisposable
 
     private bool _disposed;
 
-    public LicensePlateDetector(string modelPath, float confThreshold = 0.25f)
+    public LicensePlateDetector(
+        string modelPath,
+        SessionOptions? sessionOptions = null,
+        float confThreshold = 0.25f)
     {
-        _session = new InferenceSession(modelPath);
+        if (modelPath == null) throw new ArgumentNullException(nameof(modelPath));
+        var modelFullPath = Path.GetFullPath(modelPath);
+        if (!File.Exists(modelFullPath)) throw new FileNotFoundException($"Model not found: {modelFullPath}");
+
+        _session = new InferenceSession(modelPath, sessionOptions ?? new SessionOptions());
         _confThreshold = confThreshold;
 
         _inputName = _session.InputMetadata.Keys.First();
