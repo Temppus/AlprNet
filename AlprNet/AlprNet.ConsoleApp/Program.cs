@@ -25,13 +25,37 @@ namespace AlprNet.ConsoleApp
 
                     Console.WriteLine($"Running model: {modelFileName}");
                     using var recognizer = new LicensePlateRecognizer(modelPath, modelConfigPath);
-                    var res = recognizer.Run([image], returnConfidence: false);
-                    var plate = res.plates.Single();
+                    var result = recognizer.Run([image], returnConfidence: true);
+
+                    var plate = result.plates.Single();
+                    var confidences = result.confidences;
+
                     Console.WriteLine($"License plate is: {plate}");
+
+                    if (confidences != null)
+                    {
+                        Console.Write("Confidences: ");
+                        int rows = confidences.GetLength(0);
+                        int cols = confidences.GetLength(1);
+
+                        for (int i = 0; i < rows; i++)
+                        {
+                            for (int j = 0; j < cols; j++)
+                            {
+                                Console.Write($"{confidences[i, j],8:F3}"); // Format: 8 chars wide, 4 decimal places
+                            }
+
+                            Console.WriteLine();
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine($"[ERROR] Fail to run inference for model {modelFileName}. Reason: {e.Message}");
+                }
+                finally
+                {
+                    Console.WriteLine("-----------------------------------------\n");
                 }
             }
         }
