@@ -1,4 +1,5 @@
-﻿using AlprNet.Lib.PlateRecognition;
+﻿using AlprNet.ConsoleApp.PlateDetection;
+using AlprNet.Lib.PlateRecognition;
 using OpenCvSharp;
 
 namespace AlprNet.ConsoleApp
@@ -6,6 +7,14 @@ namespace AlprNet.ConsoleApp
     internal class Program
     {
         private static async Task Main(string[] args)
+        {
+            /*var targetDir = Path.Combine(Directory.GetCurrentDirectory());
+            await PlateDetectionModelsRepository.DownloadAllModelsAsync(targetDir);*/
+
+            await RunPlateRecognitionSampleAsync();
+        }
+
+        private static async Task RunPlateRecognitionSampleAsync()
         {
             var image = Mat.FromImageData(await File.ReadAllBytesAsync("car_plate.jpg"));
 
