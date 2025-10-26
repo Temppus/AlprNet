@@ -11,6 +11,8 @@ public class LicensePlateDetector : IDisposable
     private readonly int _imgSize;
     private readonly float _confThreshold;
 
+    private bool _disposed;
+
     public LicensePlateDetector(string modelPath, float confThreshold = 0.25f)
     {
         _session = new InferenceSession(modelPath);
@@ -123,6 +125,12 @@ public class LicensePlateDetector : IDisposable
 
     public void Dispose()
     {
+        if (_disposed)
+        {
+            return;
+        }
+
         _session.Dispose();
+        _disposed = true;
     }
 }
