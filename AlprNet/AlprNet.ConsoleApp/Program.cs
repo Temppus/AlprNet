@@ -19,8 +19,9 @@ namespace AlprNet.ConsoleApp
 
                 Console.WriteLine("Running license plate detection");
                 var detections = licensePlateDetector.Run(image);
+                var detectedPlate = detections.Single();
 
-                plateCropImg = detections.Single().ToPlateCropImage(image);
+                plateCropImg = detectedPlate.ToPlateCropImage(image);
                 Console.WriteLine("License plate detected and cropped");
                 //plateCropImg.SaveImage("crop_car.jpg");
             }

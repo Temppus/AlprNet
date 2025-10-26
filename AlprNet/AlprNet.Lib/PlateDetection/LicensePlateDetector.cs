@@ -50,25 +50,29 @@ public class LicensePlateDetector : IDisposable
     private (DenseTensor<float> tensor, float ratio, (float dw, float dh) pad) Preprocess(Mat img)
     {
         var (resized, ratio, pad) = Letterbox(img, _imgSize);
-        Cv2.CvtColor(resized, resized, ColorConversionCodes.BGR2RGB);
-        resized.ConvertTo(resized, MatType.CV_32FC3, 1.0 / 255.0);
 
-        var chw = new float[1 * 3 * _imgSize * _imgSize];
-        var index = 0;
-
-        for (int c = 0; c < 3; c++)
+        using (resized)
         {
-            for (int y = 0; y < _imgSize; y++)
+            Cv2.CvtColor(resized, resized, ColorConversionCodes.BGR2RGB);
+            resized.ConvertTo(resized, MatType.CV_32FC3, 1.0 / 255.0);
+
+            var chw = new float[1 * 3 * _imgSize * _imgSize];
+            var index = 0;
+
+            for (int c = 0; c < 3; c++)
             {
-                for (int x = 0; x < _imgSize; x++)
+                for (int y = 0; y < _imgSize; y++)
                 {
-                    chw[index++] = resized.At<Vec3f>(y, x)[c];
+                    for (int x = 0; x < _imgSize; x++)
+                    {
+                        chw[index++] = resized.At<Vec3f>(y, x)[c];
+                    }
                 }
             }
-        }
 
-        var tensor = new DenseTensor<float>(chw, new[] { 1, 3, _imgSize, _imgSize });
-        return (tensor, ratio, pad);
+            var tensor = new DenseTensor<float>(chw, new[] { 1, 3, _imgSize, _imgSize });
+            return (tensor, ratio, pad);
+        }
     }
 
     private static (Mat resized, float ratio, (float dw, float dh) pad) Letterbox(Mat src, int newSize)
@@ -81,7 +85,7 @@ public class LicensePlateDetector : IDisposable
         int dw = (newSize - newW) / 2;
         int dh = (newSize - newH) / 2;
 
-        Mat resized = new Mat();
+        var resized = new Mat();
         Cv2.Resize(src, resized, new Size(newW, newH));
         Cv2.CopyMakeBorder(resized, resized, dh, dh, dw, dw, BorderTypes.Constant, Scalar.All(114));
 
