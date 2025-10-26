@@ -6,6 +6,10 @@ namespace AlprNet.ConsoleApp
 {
     internal class Program
     {
+        /// <summary>
+        /// This should work out of the box (on windows via OpenCvSharp4.runtime.win package).
+        /// For other runtime you will need to add your OpenCvSharp4.runtime nuget variant).
+        /// </summary>
         private static async Task Main(string[] args)
         {
             Mat plateCropImg;
